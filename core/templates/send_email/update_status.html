@@ -1,0 +1,16 @@
+Prezado {{ name }},
+
+Uma ou mais das sua solicitações de pagamento foi alterada:
+Empresa : {{ employer }}
+{% for linha in lista %}
+
+Solicitação de pagamento de numero {{ linha }} o status foi alterado de {{ old_status }} para {{ to_status }}
+
+{% endfor %}
+
+
+Gentileza não responder este e-mail,
+
+Atenciosamente,
+
+Equipe Codepay
