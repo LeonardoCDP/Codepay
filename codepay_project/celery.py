@@ -25,10 +25,10 @@ def debug_task(self):
     print('Request: {0!r}'.format(self.request))
 
 
-app.conf.beat_schedule = {
+'''app.conf.beat_schedule = {
     'import-auctions-from-today': {
         'task': 'core.tasks.sum',
         'schedule': crontab(minute=1),
         'args': (2, 2),
     },
-}
+}'''
