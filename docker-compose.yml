@@ -9,7 +9,7 @@ services:
       - ../pgdata:/var/lib/postgresql/data
     environment:
       - LC_ALL=C.UTF-8
-      - POSTGRES_PASSWORD=codepay_project
+      - POSTGRES_PASSWORD=b6d:XFW+e02IS(Dw
       - POSTGRES_USER=codepay_project
 
   app:
