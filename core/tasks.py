@@ -6,7 +6,12 @@ from codepay_project.celery import app
 
 @app.task(bind=True)
 def send_email_task(self, *args, **kwargs):
-    user_pk, provider_pk, list_payment, old_status, to_status = kwargs.get('kwargs').values()
+    # user_pk, provider_pk, list_payment, old_status, to_status = kwargs.get('kwargs').values()
+    user_pk = kwargs.get('user_pk')
+    provider_pk = kwargs.get('provider_pk')
+    list_payment = kwargs.getlist('list_payment')
+    old_status = kwargs.get('old_status')
+    to_status = kwargs.get('to_status')
 
     user = User.objects.get(pk=user_pk)
     provider = Provider.objects.get(pk=provider_pk)

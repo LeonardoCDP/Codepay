@@ -160,7 +160,7 @@ task_queues = (
 )
 REDIS_DB = config('REDIS_DB', default=0, cast=int)
 CELERY_BROKER_URL = config('CELERY_URL', default='redis://localhost:6379/{}'.format(REDIS_DB))
-CELERY_RESULT_BACKEND = config('CELERY_BROKER', default='redis://localhost:6379/{}'.format(REDIS_DB))
+#CELERY_RESULT_BACKEND = config('CELERY_BROKER', default='redis://localhost:6379/{}'.format(REDIS_DB))
 CELERY_ACCEPT_CONTENT = ['application/x-python-serialize', 'application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
