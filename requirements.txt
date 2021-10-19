@@ -1,6 +1,7 @@
 black
 celery
 dj-database-url
+dj-static
 Django
 django-admin-rangefilter
 django-celery-beat
@@ -9,6 +10,7 @@ django-debug-toolbar
 django-extensions
 django-filter
 django-logentry-admin
+static3
 gunicorn
 jsondate
 psycopg2-binary
