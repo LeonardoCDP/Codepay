@@ -16,11 +16,20 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from api import viewsets
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core.urls', namespace='core')),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('api/rpa/', viewsets.payment_get, name='payment-get'),
+    path('api/rpa/<str:status>', viewsets.payment_get, name='payment-filter'),
+    path('api/rpa/<str:pk>', viewsets.payment_request, name='payment-request'),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
 ]
 

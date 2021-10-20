@@ -17,6 +17,8 @@ from decouple import config, Csv
 from dj_database_url import parse as dburl
 from django.conf.locale.pt_BR import formats
 from kombu import Exchange, Queue
+from datetime import timedelta
+
 
 SITE_ID = 1
 
@@ -56,6 +58,9 @@ INSTALLED_APPS = [
     'rangefilter',
     'dbbackup',
     'logentry_admin',
+    'rest_framework',
+    'rest_framework_simplejwt',
+
 
     'utils',
     'core.apps.CoreConfig',
@@ -89,7 +94,6 @@ MIDDLEWARE += [
 # CACHE_MIDDLEWARE_KEY_PREFIX = 'prefix'
 
 ROOT_URLCONF = 'codepay_project.urls'
-
 
 TEMPLATES = [
     {
@@ -160,13 +164,14 @@ task_queues = (
 )
 REDIS_DB = config('REDIS_DB', default=0, cast=int)
 CELERY_BROKER_URL = config('CELERY_URL', default='redis://localhost:6379/{}'.format(REDIS_DB))
-#CELERY_RESULT_BACKEND = config('CELERY_BROKER', default='redis://localhost:6379/{}'.format(REDIS_DB))
+CELERY_RESULT_BACKEND = config('CELERY_BROKER', default='redis://localhost:6379/{}'.format(REDIS_DB))
 CELERY_ACCEPT_CONTENT = ['application/x-python-serialize', 'application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
 BROKER_POOL_LIMIT = config('BROKER_POOL_LIMIT', default=0)
-
-
 RAVEN_CONFIG = {
     'dsn': config('RAVEN_CONFIG_DSN', default=''),
 }
@@ -232,6 +237,48 @@ def custom_show_toolbar(request):
     return True  # Always show toolbar, for example purposes only.
 
 
+# Config Url Login
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'core:index'
 LOGOUT_REDIRECT_URL = 'core:index'
+
+# Config Django Rest Framework
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+# JWT Authentication
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=50),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': False,
+    'UPDATE_LAST_LOGIN': False,
+
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'VERIFYING_KEY': None,
+    'AUDIENCE': None,
+    'ISSUER': None,
+    'JWK_URL': None,
+    'LEEWAY': 0,
+
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+    'USER_AUTHENTICATION_RULE': 'rest_framework_simplejwt.authentication.default_user_authentication_rule',
+
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+
+    'JTI_CLAIM': 'jti',
+
+    'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
+    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=50),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+}

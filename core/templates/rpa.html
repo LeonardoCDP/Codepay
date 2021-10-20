@@ -27,17 +27,17 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for linha in lista %}
-                {% if linha.status == 'Disponible' %}
+                {% for item in list_result %}
+                {% if item.status == 'Disponible' %}
                 <tr>
-                    <td><input type="checkbox" id="payment" name="payment{{ forloop.counter }}" value={{ linha.id_payment }}></td>
-                    <td>{{ linha.id_payment }}</td>
-                    <td>{{ linha.created }}</td>
-                    <td>{{ linha.due_date }}</td>
-                    <td>{{ linha.value_original }}</td>
-                    <td>{{ linha.provider.name }}</td>
-                    <td>{{ linha.provider.pk }}</td>
-                    <td>{{ linha.status }}</td>
+                    <td><input type="checkbox" id="payment" name="payment{{ forloop.counter }}" value={{ item.id_payment}}></td>
+                    <td>{{ item.id_payment }}</td>
+                    <td>{{ item.created }}</td>
+                    <td>{{ item.due_date }}</td>
+                    <td>{{ item.value_original }}</td>
+                    <td>{{ item.provider.name }}</td>
+                    <td>{{ item.provider.pk }}</td>
+                    <td>{{ item.status }}</td>
                 </tr>
                 {% endif %}
                 {% endfor %}
@@ -64,16 +64,16 @@
 
                 </thead>
                 <tbody>
-                {% for linha in lista %}
-                {% if linha.status != 'Disponible' %}
+                {% for item in list_result %}
+                {% if item.status != 'Disponible' %}
                 <tr>
-                    <td>{{ linha.id_payment }}</td>
-                    <td>{{ linha.created }}</td>
-                    <td>{{ linha.due_date }}</td>
-                    <td>{{ linha.value_new }}</td>
-                    <td>{{ linha.provider.name }}</td>
-                    <td>{{ linha.provider.pk }}</td>
-                    <td>{{ linha.status }}</td>
+                    <td>{{ item.id_payment }}</td>
+                    <td>{{ item.created }}</td>
+                    <td>{{ item.due_date }}</td>
+                    <td>{{ item.value_new }}</td>
+                    <td>{{ item.provider.name }}</td>
+                    <td>{{ item.provider.pk }}</td>
+                    <td>{{ item.status }}</td>
                 </tr>
                 {% endif %}
                 {% endfor %}
