@@ -9,16 +9,21 @@
                             <span data-feather="home"></span> Dashboard
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'core:rpa' %}">
-                            <span data-feather="RPA"></span> RPA
-                        </a>
-                    </li>
+                    {% if perms.global_permissions.can_acess_all_payments %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'core:rpa_adm' %}">
                             <span data-feather="RPA Admin"></span> RPA Admin
                         </a>
                     </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'core:rpa' %}">
+                            <span data-feather="RPA"></span> RPA
+                        </a>
+                    </li>
+                    {% endif %}
+
+
                 </ul>
             </div>
         </nav>
