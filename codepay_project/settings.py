@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'raven.contrib.django.raven_compat',
     'django_extensions',
     'django_celery_beat',
+    'global_permissions',
     'rangefilter',
     'dbbackup',
     'logentry_admin',
@@ -164,7 +165,6 @@ task_queues = (
 )
 REDIS_DB = config('REDIS_DB', default=0, cast=int)
 CELERY_BROKER_URL = config('CELERY_URL', default='redis://localhost:6379/{}'.format(REDIS_DB))
-CELERY_RESULT_BACKEND = config('CELERY_BROKER', default='redis://localhost:6379/{}'.format(REDIS_DB))
 CELERY_ACCEPT_CONTENT = ['application/x-python-serialize', 'application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -172,9 +172,7 @@ CELERY_TIMEZONE = TIME_ZONE
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 BROKER_POOL_LIMIT = config('BROKER_POOL_LIMIT', default=0)
-RAVEN_CONFIG = {
-    'dsn': config('RAVEN_CONFIG_DSN', default=''),
-}
+
 
 LOGGING = {
     'version': 1,

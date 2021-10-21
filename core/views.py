@@ -1,15 +1,14 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render
 from core.models import Payment
 from core.mixins import (payment_log_mixin, payment_status_mixin,
-                         valid_user_provider_mixin, valid_provider_payment_mixin)
-from core.tasks import send_email_task, hello, sum
-
+                         valid_user_provider_mixin, valid_provider_payment_mixin,
+                         persiste_provider_payments_mixin)
+from core.tasks import send_email_task
 
 @login_required
 def index(request):
     template_name = 'index.html'
-    hello.apply_async()
     return render(request, template_name)
 
 
@@ -38,6 +37,22 @@ def rpa(request):
 
     if provider_id:
         list_result = Payment.objects.filter(provider_id=provider_id)
+    response = {
+        'list_result': list_result
+    }
+    return render(request, template_name, response)
+
+
+@login_required
+@permission_required('global_permissions.can_acess_all_payments')
+def rpa_adm(request):
+    template_name = 'rpa_adm.html'
+
+
+    if request.method == 'POST':
+        persiste_provider_payments_mixin(request.POST.items())
+
+    list_result = Payment.objects.all()
     response = {
         'list_result': list_result
     }

@@ -6,15 +6,15 @@ from core.mixins import (send_mail_mixin, payment_log_mixin,
                          payment_status_mixin, get_user_provider_mixin)
 
 
-
 @app.task(bind=True)
 def send_email_task(self, *args, **kwargs):
-    # user_pk, provider_id, list_payment, old_status, to_status = kwargs.get('kwargs').values()
     user_pk = kwargs.get('user_pk')
     provider_id = kwargs.get('provider_id')
-    list_payment = kwargs.getlist('list_payment')
+    list_payment = kwargs.get('list_payment')
     old_status = kwargs.get('old_status')
     to_status = kwargs.get('to_status')
+    if user_pk == None:
+        user_pk, provider_id, list_payment, old_status, to_status = kwargs.get('kwargs').values()
 
     user = User.objects.get(pk=user_pk)
     provider = Provider.objects.get(pk=provider_id)
@@ -33,27 +33,27 @@ def send_email_task(self, *args, **kwargs):
 
 @app.task(bind=True)
 def not_disponible_task(self):
+    to_status = 'Not_Disponible'
+    list_payment = list()
+    status = ['Disponible', 'Requested']
 
     date_now = date.today()
-    payment = Payment.objects.all().filter(due_date=date_now)
+    payment = Payment.objects.all().filter(due_date=date_now).values()
 
-    for c, v in payment:
-        old_status = payment.status
-        to_status = 'Not_Disponible'
-        provider_id = payment.provider_id
+    for item in payment:
+        list_payment.clear()
+        old_status = item['status']
+        provider_id = item['provider_id']
         user_pk = get_user_provider_mixin(provider_id)
-        list_payment = []
-
-        print(user_pk, provider_id, list_payment, old_status, to_status)
-
-
-
-
-
-
-
-   # payment_status_mixin(list_payment, to_status)
-   # payment_log_mixin(user_pk, list_payment, to_status)
+        list_payment.append(item['id_payment'])
+        if old_status in status:
+            payment_status_mixin(list_payment, to_status)
+            payment_log_mixin(user_pk, list_payment, to_status)
+            send_email_task(kwargs={'user_pk': user_pk,
+                                    'provider_id': provider_id,
+                                    'list_payment': list_payment,
+                                    'old_status': old_status,
+                                    'to_status': to_status, })
 
 
 @app.task(bind=True)

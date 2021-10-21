@@ -49,7 +49,7 @@ services:
   celery_beat:
     container_name: celery_beat
     build: .
-    command: celery -A codepay_project beat --loglevel=DEBUG
+    command: celery -A codepay_project beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
     working_dir: /app
     volumes:
       - ./:/app

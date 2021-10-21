@@ -3,6 +3,7 @@ celery
 dj-database-url
 dj-static
 Django
+django-global-permissions
 django-admin-rangefilter
 django-celery-beat
 django-dbbackup
