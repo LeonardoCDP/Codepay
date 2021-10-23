@@ -1,10 +1,9 @@
 from codepay_project import settings
 from django.contrib.auth.models import User
-from core.models import PaymentLog, Payment, ProviderToProfile
+from core.models import PaymentLog, Payment
 from django.template.loader import render_to_string
 from django.core import mail
 from datetime import date
-
 
 
 def payment_status_mixin(list_id_payment, status):
@@ -23,7 +22,7 @@ def payment_log_mixin(user_pk, list_id_payment, status):
             status=status,
         )
 
-
+"""
 def valid_user_provider_mixin(user_id):
     try:
         provider = ProviderToProfile.objects.get(user_id=user_id)
@@ -32,7 +31,7 @@ def valid_user_provider_mixin(user_id):
         provider = False
 
     return provider
-
+"""
 
 def get_elements_mixin(item_name, dic_elements):
     result = []
@@ -55,7 +54,7 @@ def valid_provider_payment_mixin(item_name, provider_id, list_items_post, old_st
             result.append(item)
     return result
 
-
+"""
 def persiste_provider_payments_mixin(list_items_post):
     from core.tasks import send_email_task
     old_status = ['Requested', 'Disponible']
@@ -81,8 +80,6 @@ def persiste_provider_payments_mixin(list_items_post):
                                                 'list_payment': list_payment,
                                                 'old_status': old_status,
                                                 'to_status': to_status, })
-
-
 def get_user_provider_mixin(provider_id):
     try:
         user = ProviderToProfile.objects.get(provider_id=provider_id)
@@ -91,7 +88,7 @@ def get_user_provider_mixin(provider_id):
         user = False
 
     return user
-
+"""
 
 def apply_discount_mixin(object):
     old_value = object.value_original

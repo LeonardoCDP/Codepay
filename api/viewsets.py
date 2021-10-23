@@ -6,15 +6,14 @@ from rest_framework import status
 from api.serializers import PaymentSerializer, PaymentRequestSerializer
 from core.models import Payment
 from core.tasks import send_email_task
-from core.mixins import (payment_log_mixin, payment_status_mixin,
-                         valid_user_provider_mixin, valid_provider_payment_mixin)
+from core.mixins import (payment_log_mixin, payment_status_mixin)
 
 
 @api_view(['GET'])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def payment_get(request, status=None):
-    if request.method == 'GET':
+    """if request.method == 'GET':
         user_pk = request.user.pk
         provider_id = valid_user_provider_mixin(user_pk)
 
@@ -25,14 +24,14 @@ def payment_get(request, status=None):
 
 
         serializers = PaymentSerializer(payment, many=True)
-        return Response(serializers.data)
+        return Response(serializers.data)"""
 
 
 @api_view(['GET', 'PUT'])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def payment_request(request, pk):
-    old_status = 'Disponible'
+    """old_status = 'Disponible'
     to_status = 'Requested'
     user_pk = request.user.pk
     provider_id = valid_user_provider_mixin(user_pk)
@@ -62,4 +61,4 @@ def payment_request(request, pk):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)"""

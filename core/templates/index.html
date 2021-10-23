@@ -7,8 +7,81 @@
         <h1 class="h2">Dashboard - Bem Vindo {{ user.first_name }} !!!</h1>
     </div>
 
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h2 class="h2">Available Antecipations{{ payment.id_payment }}{{ object.created }}</h2>
 
+    </div>
+    <div class="table-responsive">
+        <form action="." method="POST">
+            {% csrf_token %}
+            <table class="table table-striped table-sm">
+                <thead>
+                <tr>
+                    <th scope="col">Check</th>
+                    <th scope="col">Id Payment</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Due Date</th>
+                    <th scope="col">Value</th>
+                    <th scope="col">Provider</th>
+                    <th scope="col">Register</th>
+                    <th scope="col">Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in object_list %}
 
+                <tr>
+                    <td><input type="checkbox" id="payment" name="payment{{ forloop.counter }}" value={{ item.id_payment}}></td>
+                    <td>{{ item.id_payment }}</td>
+                    <td>{{ item.created }}</td>
+                    <td>{{ item.due_date }}</td>
+                    <td>{{ item.original_value }}</td>
+                    <td>{{ item.id_provider.name }}</td>
+                    <td>{{ item.id_provider.pk }}</td>
+                    <td>{{ item.status }}</td>
+                </tr>
+
+                {% endfor %}
+                </tbody>
+            </table>
+            <button type="submit" class="btn btn-sm btn-outline-secondary">Request Selected Antecipation(s)</button>
+        </form>
+
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h2 class="h2">Historic The Paymants</h2>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped table-sm">
+                <thead>
+                <tr>
+                    <th scope="col">Id Payment</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Due Date</th>
+                    <th scope="col">Value</th>
+                    <th scope="col">Provider</th>
+                    <th scope="col">Register</th>
+                    <th scope="col">Status</th>
+                </tr>
+
+                </thead>
+                <tbody>
+                {% for item in object_list %}
+                {% if item.status != 'Disponible' %}
+                <tr>
+                    <td>{{ item.id_payment }}</td>
+                    <td>{{ item.created }}</td>
+                    <td>{{ item.due_date }}</td>
+                    <td>{{ item.new_value }}</td>
+                    <td>{{ item.id_provider.name }}</td>
+                    <td>{{ item.id_provider.pk }}</td>
+                    <td>{{ item.status }}</td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </main>
 
 {% endblock content %}

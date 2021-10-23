@@ -3,7 +3,7 @@ from core.models import Payment, Provider
 from codepay_project.celery import app
 from datetime import date
 from core.mixins import (send_mail_mixin, payment_log_mixin,
-                         payment_status_mixin, get_user_provider_mixin)
+                         payment_status_mixin)#, get_user_provider_mixin)
 
 
 @app.task(bind=True)
@@ -30,7 +30,7 @@ def send_email_task(self, *args, **kwargs):
     send_mail_mixin(subject, to, template_name, context)
     return True
 
-
+'''
 @app.task(bind=True)
 def not_disponible_task(self):
     to_status = 'Not_Disponible'
@@ -55,7 +55,7 @@ def not_disponible_task(self):
                                     'old_status': old_status,
                                     'to_status': to_status, })
 
-
+'''
 @app.task(bind=True)
 def hello(self):
     print('hello')
