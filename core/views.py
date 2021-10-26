@@ -2,7 +2,7 @@ import gettext
 
 from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render
-from core.models import Payment
+from core.models import Payment, Provider
 from core.mixins import (payment_log_mixin, payment_status_mixin,
                           valid_provider_payment_mixin)
                          #persiste_provider_payments_mixin, valid_user_provider_mixin)
@@ -23,11 +23,27 @@ def index(request):
 
 @login_required
 def rpa(request):
-
     template_name = 'rpa.html'
+    user = request.user
+    provider = Provider.objects.get(id_user=user.pk)
+    old_status = 'disponible'
+    to_status = 'requested'
+    item_name = 'payment'
+    list_payment = valid_provider_payment_mixin(item_name,
+                                                request.POST.items(),
+                                                old_status)
+
+    if request.method == 'POST':
+        payment_status_mixin(list_payment, to_status)
+        payment_log_mixin(user.user, list_payment, to_status)
+        send_email_task.apply_async(kwargs={'user.pk': user.pk,
+                                            'provider_id': provider.pk,
+                                            'list_payment': list_payment,
+                                            'old_status': old_status,
+                                            'to_status': to_status, })
 
     response = {
-        'object_list': Payment.objects.all()
+        'object_list': Payment.objects.filter(id_provider=provider.pk)
     }
     return render(request, template_name, response)
 

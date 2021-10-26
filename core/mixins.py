@@ -14,12 +14,13 @@ def payment_status_mixin(list_id_payment, status):
             Payment.objects.filter(id_payment=item).update(value_new=value_new)
 
 
-def payment_log_mixin(user_pk, list_id_payment, status):
+def payment_log_mixin(user_name, list_id_payment, status):
     for item in list_id_payment:
         PaymentLog.objects.create(
-            user_id=User.objects.get(pk=user_pk),
-            payment_id=Payment.objects.get(id_payment=item),
+            user_agent=user_name,
             status=status,
+            id_payment=Payment.objects.get(id_payment=item),
+
         )
 
 """
@@ -41,7 +42,7 @@ def get_elements_mixin(item_name, dic_elements):
     return result
 
 
-def valid_provider_payment_mixin(item_name, provider_id, list_items_post, old_status):
+def valid_provider_payment_mixin(item_name, list_items_post, old_status):
     list_payments = get_elements_mixin(item_name, list_items_post)
     result = []
 
@@ -50,7 +51,7 @@ def valid_provider_payment_mixin(item_name, provider_id, list_items_post, old_st
             resp = Payment.objects.get(id_payment=item)
         except:
             resp = None
-        if resp.provider_id == provider_id and resp.status in old_status:
+        if resp.status in old_status:
             result.append(item)
     return result
 

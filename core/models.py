@@ -9,7 +9,6 @@ class Profile(Base):
         verbose_name = 'perfil'
         verbose_name_plural = 'perfis'
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):
