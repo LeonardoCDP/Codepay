@@ -27,23 +27,23 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for item in list_result %}
-                {% if item.status == "Disponible" or item.status == "Requested" %}
+                {% for item in object_list %}
+                {% if item.status == "disponible" or item.status == "requested" %}
                 <tr>
                     <td><input type="checkbox" id="payment" name="payment_{{ item.id_payment }}" value={{ item.id_payment}}></td>
                     <td>{{ item.id_payment }}</td>
                     <td>{{ item.created }}</td>
                     <td>{{ item.due_date }}</td>
-                    <td>{{ item.value_original }}</td>
-                    <td>{{ item.provider.name }}</td>
+                    <td>{{ item.original_value }}</td>
+                    <td>{{ item.id_provider.name }}</td>
                     <td>
-                        <input type="text" id="provider" name="provider_{{ item.id_payment }}" value="{{ item.provider.pk }}"readonly>
+                        <input type="text" id="provider" name="provider_{{ item.id_payment }}" value="{{ item.id_provider.pk }}"readonly>
                     </td>
                     <td>
                         <select class="form-select" name="status_{{ item.id_payment }}" id="status" required>
-                            <option value="Requested">Requested</option>
-                            <option value="Released">Released</option>
-                            <option value="Denied">Denied</option>
+                            <option value="requested">Requested</option>
+                            <option value="released">Released</option>
+                            <option value="denied">Denied</option>
                             <option selected disabled value="{{ item.status }}">{{ item.status }}</option>
                         </select>
                     </td>
@@ -73,15 +73,15 @@
 
                 </thead>
                 <tbody>
-                {% for item in list_result %}
-                {% if item.status != "Disponible" and item.status != "Requested" %}
+                {% for item in object_list %}
+                {% if item.status != "disponible" and item.status != "requested" %}
                 <tr>
                     <td>{{ item.id_payment }}</td>
                     <td>{{ item.created }}</td>
                     <td>{{ item.due_date }}</td>
-                    <td>{{ item.value_new }}</td>
-                    <td>{{ item.provider.name }}</td>
-                    <td>{{ item.provider.pk }}</td>
+                    <td>{{ item.new_value }}</td>
+                    <td>{{ item.id_provider.name }}</td>
+                    <td>{{ item.id_provider.pk }}</td>
                     <td>{{ item.status }}</td>
                 </tr>
                 {% endif %}

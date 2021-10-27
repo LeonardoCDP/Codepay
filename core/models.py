@@ -66,6 +66,6 @@ class PaymentLog(Base):
         verbose_name = 'log de pagamento'
         verbose_name_plural = 'logs de pagamentos'
 
-    user_agent = models.CharField(max_length=512)
+    user_agent = models.ForeignKey(Profile, models.DO_NOTHING)
     status = models.CharField('Status', max_length=50)
     id_payment = models.ForeignKey(Payment, models.DO_NOTHING, related_name='logs')
