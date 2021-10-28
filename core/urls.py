@@ -6,7 +6,7 @@ app_name = 'core'
 
 
 urlpatterns = [
-    path('', v.index, name='index'),
-    path('rpa/', v.rpa, name='rpa'),
-    path('rpa_adm/', v.rpa_adm, name='rpa_adm'),
+    path(r'/', v.index, name='index'),
+    path(r'rpa/', v.rpa, name='rpa'),
+    path(r'rpa_adm/', v.rpa_adm, name='rpa_adm'),
 ]
